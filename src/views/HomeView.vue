@@ -16,6 +16,10 @@ const nextQuestion = () => {
     stepCount.value += 1
 }
 
+const flip = () => {
+    showQuestion(false)
+}
+
 const markAsCorrect = (isCorrect = true) => {
     if (isCorrect) {
         correctAnswersCount += 1
@@ -65,11 +69,27 @@ const cards: Card[] = [
                 </div>
             </div>
             <div class="mt-6">
-                <button @click="showQuestion(false)"
-                        class="border border-white py-3 w-48 rounded-lg hover:bg-gray-700"
-                >
-                    SEMAK
-                </button>
+                <template v-if="isShowingQuestion">
+                    <button @click="flip()"
+                            class="border border-white py-3 w-48 rounded-lg hover:bg-gray-700"
+                    >
+                        SEMAK
+                    </button>
+                </template>
+                <template v-else>
+                    <div class="space-x-4">
+                        <button @click="markAsCorrect(false)"
+                                class=" border border-white py-3 w-48 rounded-lg hover:bg-red-400  hover:text-gray-700 hover:font-bold"
+                        >
+                            SALAH
+                        </button>
+                        <button @click="markAsCorrect"
+                                class=" border border-white py-3 w-48 rounded-lg hover:bg-green-400 hover:text-gray-700 hover:font-bold"
+                        >
+                            BETUL
+                        </button>
+                    </div>
+                </template>
             </div>
         </div>
     </main>
