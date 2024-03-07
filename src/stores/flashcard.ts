@@ -1,7 +1,9 @@
-import {ref, computed} from 'vue'
+import {ref, computed, watch} from 'vue'
 import {defineStore} from 'pinia'
 import almulk from "@/data/decks/almulk";
 import type {Card} from "@/types/card";
+import * as Fathom from 'fathom-client'
+
 
 export const useFlashcardStore = defineStore('flashcard', () => {
 
@@ -80,6 +82,10 @@ export const useFlashcardStore = defineStore('flashcard', () => {
 
     const displayDescription = computed(() => cards.value[index.value]?.description ?? '')
 
+    const sendFathomFlashCardCompleted = () => {
+        Fathom.trackEvent('flashCardCompleted');
+    }
+
     return {
         index,
         deckTitle,
@@ -95,5 +101,6 @@ export const useFlashcardStore = defineStore('flashcard', () => {
         initNewSet,
         flipCard,
         markAsCorrect,
+        sendFathomFlashCardCompleted
     }
 })

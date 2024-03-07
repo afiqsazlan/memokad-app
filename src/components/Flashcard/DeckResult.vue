@@ -17,9 +17,17 @@
 
 import {useFlashcardStore} from "@/stores/flashcard";
 import {storeToRefs} from "pinia";
+import {onMounted} from "vue";
 
 const store = useFlashcardStore()
 
 const {correctAnswersCount, wrongAnswersCount} = storeToRefs(store)
+const {sendFathomFlashCardCompleted} = store
+
+onMounted(() => {
+    if (import.meta.env.PROD) {
+        sendFathomFlashCardCompleted()
+    }
+})
 
 </script>
