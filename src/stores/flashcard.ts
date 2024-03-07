@@ -2,10 +2,12 @@ import {ref, computed} from 'vue'
 import {defineStore} from 'pinia'
 import almulk from "@/data/decks/almulk";
 import type {Card} from "@/types/card";
-import {trackEvent} from 'fathom-client'
+import {load, trackEvent} from 'fathom-client'
 
 
 export const useFlashcardStore = defineStore('flashcard', () => {
+
+    load(import.meta.env.VITE_FATHOM_SITE_ID)
 
     const deck = almulk;
     const deckTitle = deck.title
