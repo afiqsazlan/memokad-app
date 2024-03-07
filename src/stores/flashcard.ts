@@ -1,4 +1,4 @@
-import {ref, computed, watch} from 'vue'
+import {ref, computed} from 'vue'
 import {defineStore} from 'pinia'
 import almulk from "@/data/decks/almulk";
 import type {Card} from "@/types/card";
@@ -32,9 +32,13 @@ export const useFlashcardStore = defineStore('flashcard', () => {
     }
 
     const initNewSet = () => {
+
         if (isFirstSet.value) {
             isFirstSet.value = false
+        } else {
+            sendFathomNewFlashCardSetRequested()
         }
+
         cards.value = selectCardsFromDeck()
         resetIndex()
         resetResults()
@@ -84,6 +88,10 @@ export const useFlashcardStore = defineStore('flashcard', () => {
 
     const sendFathomFlashCardCompleted = () => {
         Fathom.trackEvent('flashCardCompleted');
+    }
+
+    const sendFathomNewFlashCardSetRequested = () => {
+        Fathom.trackEvent('newFlashCardSetRequested');
     }
 
     return {
