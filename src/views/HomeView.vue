@@ -11,7 +11,7 @@ let wrongAnswersCount = 0
 
 const showQuestion = (value = true) => isShowingQuestion.value = value
 
-const nextQuestion = () => {
+const nextCard = () => {
     showQuestion()
     stepCount.value += 1
 }
@@ -21,15 +21,14 @@ const flip = () => {
 }
 
 const markAsCorrect = (isCorrect = true) => {
+
     if (isCorrect) {
         correctAnswersCount += 1
     } else {
         wrongAnswersCount += 1
     }
 
-    nextQuestion()
-
-    console.log(`correct: ${correctAnswersCount} vs wrong: ${wrongAnswersCount}`)
+    nextCard()
 }
 
 const displayText = computed(() => {
@@ -37,6 +36,8 @@ const displayText = computed(() => {
         ? cards[stepCount.value - 1]?.front
         : cards[stepCount.value - 1]?.back
 })
+
+const isOngoing = computed(() => !!cards[stepCount.value - 1])
 
 interface Card {
     front: string
@@ -61,36 +62,51 @@ const cards: Card[] = [
             <h1 class="text-3xl font-bold tracking-wider">
                 Al-Mulk
             </h1>
-            <div class="w-100 flex justify-center mt-12">
-                <div class="border border-white text-center flex justify-center items-center w-1/3 h-40 ">
-                    <div>
-                        {{ displayText }}
+            <template v-if="isOngoing">
+                <div class="w-100 flex justify-center mt-12">
+                    <div class="border border-white text-center flex justify-center items-center w-1/3 h-40 ">
+                        <div>
+                            {{ displayText }}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="mt-6">
-                <template v-if="isShowingQuestion">
-                    <button @click="flip()"
-                            class="border border-white py-3 w-48 rounded-lg hover:bg-gray-700"
-                    >
-                        SEMAK
-                    </button>
-                </template>
-                <template v-else>
-                    <div class="space-x-4">
-                        <button @click="markAsCorrect(false)"
-                                class=" border border-white py-3 w-48 rounded-lg hover:bg-red-400  hover:text-gray-700 hover:font-bold"
-                        >
-                            SALAH
-                        </button>
-                        <button @click="markAsCorrect"
-                                class=" border border-white py-3 w-48 rounded-lg hover:bg-green-400 hover:text-gray-700 hover:font-bold"
-                        >
-                            BETUL
-                        </button>
+                <div class="mt-6">
+                    <div>
+                        <template v-if="isShowingQuestion">
+                            <button @click="flip()"
+                                    class="border border-white py-3 w-48 rounded-lg hover:bg-gray-700"
+                            >
+                                SEMAK
+                            </button>
+                        </template>
+                        <template v-else>
+                            <div class="space-x-4">
+                                <button @click="markAsCorrect(false)"
+                                        class=" border border-white py-3 w-48 rounded-lg hover:bg-red-400  hover:text-gray-700 hover:font-bold"
+                                >
+                                    SALAH
+                                </button>
+                                <button @click="markAsCorrect"
+                                        class=" border border-white py-3 w-48 rounded-lg hover:bg-green-400 hover:text-gray-700 hover:font-bold"
+                                >
+                                    BETUL
+                                </button>
+                            </div>
+                        </template>
                     </div>
-                </template>
-            </div>
+                </div>
+            </template>
+            <template v-else>
+                <div>
+                    RESULTS
+                </div>
+                <div>
+                    BETUL: {{ correctAnswersCount }}
+                </div>
+                <div>
+                    SALAH: {{ wrongAnswersCount }}
+                </div>
+            </template>
         </div>
     </main>
 </template>
