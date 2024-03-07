@@ -1,12 +1,15 @@
 import {ref, computed} from 'vue'
 import {defineStore} from 'pinia'
 import almulk from "@/data/decks/almulk";
+import type {Card} from "@/types/card";
 
 export const useFlashcardStore = defineStore('flashcard', () => {
 
     const deck = almulk;
     const deckTitle = deck.title
-    const cards = deck.cards
+    const cards = ref<Card[]>([])
+
+    const cardsPerDeck = 5
 
     const index = ref<number>(0)
     const correctAnswersCount = ref<number>(0)
@@ -14,7 +17,38 @@ export const useFlashcardStore = defineStore('flashcard', () => {
 
     const isShowingQuestion = ref(true)
 
+    const isFirstSet = ref(true)
+
+    const isOngoing = computed(() => !!cards.value[index.value])
+    const isReadyForNewSet = computed(() => cards.value.length === 0 || !isOngoing.value)
+
     const showQuestion = (value = true) => isShowingQuestion.value = value
+    const resetIndex = () => index.value = 0
+    const resetResults = () => {
+        correctAnswersCount.value = 0
+        wrongAnswersCount.value = 0
+    }
+
+    const initNewSet = () => {
+        if (isFirstSet.value) {
+            isFirstSet.value = false
+        }
+        cards.value = selectCardsFromDeck()
+        resetIndex()
+        resetResults()
+        showQuestion()
+    }
+
+    const selectCardsFromDeck = () => {
+        const selectedCards: Card[] = [];
+        const shuffledCards = deck.cards.sort(() => Math.random() - 0.5)
+
+        for (let i = 0; i < cardsPerDeck; i++) {
+            selectedCards.push(shuffledCards[i])
+        }
+
+        return selectedCards
+    }
 
     const nextCard = () => {
         showQuestion()
@@ -36,25 +70,29 @@ export const useFlashcardStore = defineStore('flashcard', () => {
         nextCard()
     }
 
-    const cardsCount = computed(() => deck.cards?.length)
+    const cardsCount = computed(() => cards.value?.length)
 
     const displayText = computed(() => {
         return isShowingQuestion.value
-            ? cards[index.value]?.front
-            : cards[index.value]?.back
+            ? cards.value[index.value]?.front
+            : cards.value[index.value]?.back
     })
 
-    const isOngoing = computed(() => !!cards[index.value])
+    const displayDescription = computed(() => cards.value[index.value]?.description ?? '')
 
     return {
         index,
         deckTitle,
         displayText,
+        displayDescription,
         isShowingQuestion,
         correctAnswersCount,
         wrongAnswersCount,
         isOngoing,
         cardsCount,
+        isFirstSet,
+        isReadyForNewSet,
+        initNewSet,
         flipCard,
         markAsCorrect,
     }

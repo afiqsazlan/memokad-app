@@ -6,9 +6,16 @@
                     {{ isShowingQuestion ? 'SOALAN' : 'JAWAPAN' }}
                 </p>
             </div>
-            <div class=" h-full px-4 h-full flex items-center">
+            <div class=" h-full px-4  flex items-center">
                 <p class=" text-3xl leading-[5rem] tracking-wider"> {{ displayText }}</p>
             </div>
+            <template v-if="!isShowingQuestion">
+                <div class=" flex text-right w-full justify-end">
+                    <p class=" text-sm text-white text-opacity-60 px-2 py-1 ">
+                        {{ displayDescription }}
+                    </p>
+                </div>
+            </template>
         </div>
         <CardCount class="mt-1"/>
         <div class="mt-4">
@@ -47,7 +54,7 @@ import CardCount from "@/components/Flashcard/CardCount.vue";
 
 const store = useFlashcardStore()
 
-const {displayText, isShowingQuestion} = storeToRefs(store)
+const {displayText, isShowingQuestion, displayDescription} = storeToRefs(store)
 
 const {markAsCorrect, flipCard} = store
 
