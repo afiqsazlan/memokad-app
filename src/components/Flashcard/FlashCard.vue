@@ -37,7 +37,7 @@
                     </button>
                     <button
                         class=" border border-green-400 border-opacity-50 text-lg text-green-400 font-bold  tracking-wider  py-3 w-1/2 md:w-48 rounded-lg hover:bg-green-400 hover:text-gray-700 "
-                        @click="markAsCorrect"
+                        @click="markAsCorrect()"
                     >
                         BETUL
                     </button>
