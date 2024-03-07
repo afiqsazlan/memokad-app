@@ -1,112 +1,11 @@
-<script setup lang="ts">
-
-import {computed, ref} from 'vue'
-
-let isShowingQuestion = ref(true)
-
-let stepCount = ref(1)
-
-let correctAnswersCount = 0
-let wrongAnswersCount = 0
-
-const showQuestion = (value = true) => isShowingQuestion.value = value
-
-const nextCard = () => {
-    showQuestion()
-    stepCount.value += 1
-}
-
-const flip = () => {
-    showQuestion(false)
-}
-
-const markAsCorrect = (isCorrect = true) => {
-
-    if (isCorrect) {
-        correctAnswersCount += 1
-    } else {
-        wrongAnswersCount += 1
-    }
-
-    nextCard()
-}
-
-const displayText = computed(() => {
-    return isShowingQuestion.value
-        ? cards[stepCount.value - 1]?.front
-        : cards[stepCount.value - 1]?.back
-})
-
-const isOngoing = computed(() => !!cards[stepCount.value - 1])
-
-interface Card {
-    front: string
-    back: string
-}
-
-const cards: Card[] = [
-    {
-        front: "...تَبَـٰرَكَ ٱلَّذِى بِيَدِه",
-        back: "ِ ٱلْمُلْكُ وَهُوَ عَلَىٰ كُلِّ شَىْءٍۢ قَدِير..."
-    },
-    {
-        front: "...ٱلَّذِى خَلَقَ ٱلْمَوْتَ",
-        back: "لِيَبْلُوَكُمْ أَيُّكُمْ أَحْسَنُ عَمَلًۭا ۚ وَهُوَ ٱلْعَزِيزُ ٱلْغَفُورُ.."
-    }
-]
-</script>
-
 <template>
     <main>
-        <div class="flex flex-col w-dvw h-dvh bg-gray-800 justify-center text-center  text-white">
-            <h1 class="text-3xl font-bold tracking-wider">
-                Al-Mulk
-            </h1>
-            <template v-if="isOngoing">
-                <div class="w-100 flex justify-center mt-12">
-                    <div class="border border-white text-center flex justify-center items-center w-1/3 h-40 ">
-                        <div>
-                            {{ displayText }}
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-6">
-                    <div>
-                        <template v-if="isShowingQuestion">
-                            <button @click="flip()"
-                                    class="border border-white py-3 w-48 rounded-lg hover:bg-gray-700"
-                            >
-                                SEMAK
-                            </button>
-                        </template>
-                        <template v-else>
-                            <div class="space-x-4">
-                                <button @click="markAsCorrect(false)"
-                                        class=" border border-white py-3 w-48 rounded-lg hover:bg-red-400  hover:text-gray-700 hover:font-bold"
-                                >
-                                    SALAH
-                                </button>
-                                <button @click="markAsCorrect"
-                                        class=" border border-white py-3 w-48 rounded-lg hover:bg-green-400 hover:text-gray-700 hover:font-bold"
-                                >
-                                    BETUL
-                                </button>
-                            </div>
-                        </template>
-                    </div>
-                </div>
-            </template>
-            <template v-else>
-                <div>
-                    RESULTS
-                </div>
-                <div>
-                    BETUL: {{ correctAnswersCount }}
-                </div>
-                <div>
-                    SALAH: {{ wrongAnswersCount }}
-                </div>
-            </template>
+        <div class="flex flex-col w-dvw h-dvh bg-gray-800 justify-center text-center text-white">
+            <FlashcardDeck/>
         </div>
     </main>
 </template>
+
+<script setup lang="ts">
+import FlashcardDeck from "@/components/Flashcard/DeckComponent.vue";
+</script>
