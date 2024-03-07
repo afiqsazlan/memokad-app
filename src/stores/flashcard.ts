@@ -36,6 +36,8 @@ export const useFlashcardStore = defineStore('flashcard', () => {
         nextCard()
     }
 
+    const cardsCount = computed(() => deck.cards?.length)
+
     const displayText = computed(() => {
         return isShowingQuestion.value
             ? cards[index.value]?.front
@@ -45,12 +47,14 @@ export const useFlashcardStore = defineStore('flashcard', () => {
     const isOngoing = computed(() => !!cards[index.value])
 
     return {
+        index,
         deckTitle,
         displayText,
         isShowingQuestion,
         correctAnswersCount,
         wrongAnswersCount,
         isOngoing,
+        cardsCount,
         flipCard,
         markAsCorrect,
     }

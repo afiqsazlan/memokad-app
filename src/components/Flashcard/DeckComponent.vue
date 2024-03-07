@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col items-center w-full ">
         <DeckTitle/>
-        <FlashCard v-if="isOngoing"/>
+        <FlashCard v-if="isOngoing" />
         <DeckResult v-else/>
     </div>
 </template>
