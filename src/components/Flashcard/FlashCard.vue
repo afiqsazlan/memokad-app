@@ -7,7 +7,7 @@
                 </p>
             </div>
             <div class=" h-full px-4  flex items-center">
-                <p class=" text-3xl leading-[5rem] tracking-wider"> {{ displayText }}</p>
+                <p class=" text-3xl leading-[5rem] tracking-wider" dir="rtl"> {{ displayText }}</p>
             </div>
             <template v-if="!isShowingQuestion">
                 <div class=" flex text-right w-full justify-end">
