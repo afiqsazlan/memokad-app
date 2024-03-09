@@ -5,6 +5,8 @@ import type {Card} from "@/types/card";
 import {load, trackEvent} from 'fathom-client'
 
 
+type QuizMode = 'shuffled' | 'sequential'
+
 export const useFlashcardStore = defineStore('flashcard', () => {
 
     load(import.meta.env.VITE_FATHOM_SITE_ID)
@@ -18,6 +20,9 @@ export const useFlashcardStore = defineStore('flashcard', () => {
     const index = ref<number>(0)
     const correctAnswersCount = ref<number>(0)
     const wrongAnswersCount = ref<number>(0)
+
+    const selectedMode = ref<QuizMode>()
+    const setSelectedMode = (mode: QuizMode) => selectedMode.value = mode
 
     const isShowingQuestion = ref(true)
 
@@ -33,13 +38,15 @@ export const useFlashcardStore = defineStore('flashcard', () => {
         wrongAnswersCount.value = 0
     }
 
-    const initNewSet = () => {
+    const initNewSet = (mode: QuizMode) => {
 
         if (isFirstSet.value) {
             isFirstSet.value = false
         } else {
             sendFathomNewFlashCardSetRequested()
         }
+
+        setSelectedMode(mode)
 
         cards.value = selectCardsFromDeck()
         resetIndex()
@@ -48,11 +55,16 @@ export const useFlashcardStore = defineStore('flashcard', () => {
     }
 
     const selectCardsFromDeck = () => {
-        const selectedCards: Card[] = [];
-        const shuffledCards = deck.cards.sort(() => Math.random() - 0.5)
+        let selectedCards: Card[] = [];
 
-        for (let i = 0; i < cardsPerDeck; i++) {
-            selectedCards.push(shuffledCards[i])
+        if (selectedMode.value === 'sequential') {
+            selectedCards = deck.cards
+        } else if (selectedMode.value === 'shuffled') {
+            const shuffledCards = deck.cards.sort(() => Math.random() - 0.5)
+
+            for (let i = 0; i < cardsPerDeck; i++) {
+                selectedCards.push(shuffledCards[i])
+            }
         }
 
         return selectedCards
@@ -104,6 +116,7 @@ export const useFlashcardStore = defineStore('flashcard', () => {
         isShowingQuestion,
         correctAnswersCount,
         wrongAnswersCount,
+        selectedMode,
         isOngoing,
         cardsCount,
         isFirstSet,

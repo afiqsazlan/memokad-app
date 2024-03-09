@@ -2,20 +2,18 @@
     <div class="flex flex-col w-full md:w-1/2 px-6 my-6 ">
         <div class=" border-2 border-white text-center  flex flex-col  items-center h-96 md:h-54 py-4 rounded-lg px-4">
             <div class="flex w-full">
-                <p class="border border-white border-opacity-30 text-sm text-white text-opacity-40 tracking-wider min-w-24 px-2 py-1 rounded-lg">
+                <p class="border border-white border-opacity-30 text-sm text-white text-opacity-60 tracking-wider min-w-24 px-2 py-1 rounded-lg">
                     {{ isShowingQuestion ? 'SOALAN' : 'JAWAPAN' }}
                 </p>
             </div>
             <div class=" h-full px-4  flex items-center">
                 <p class=" text-3xl leading-[5rem] tracking-wider" dir="rtl"> {{ displayText }}</p>
             </div>
-            <template v-if="!isShowingQuestion">
-                <div class=" flex text-right w-full justify-end">
-                    <p class=" text-sm text-white text-opacity-60 px-2 py-1 ">
-                        {{ displayDescription }}
-                    </p>
-                </div>
-            </template>
+            <div class=" flex text-right w-full justify-end">
+                <p class=" text-sm text-white text-opacity-60 px-2 py-1 ">
+                    {{ displayDescription }}
+                </p>
+            </div>
         </div>
         <CardCount class="mt-1"/>
         <div class="mt-4">
