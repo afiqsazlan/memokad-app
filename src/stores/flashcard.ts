@@ -1,18 +1,25 @@
-import {ref, computed} from 'vue'
+import {ref, computed, watch} from 'vue'
 import {defineStore} from 'pinia'
-import almulk from "@/data/decks/almulk";
 import type {Card} from "@/types/card";
 import {load, trackEvent} from 'fathom-client'
+import deckList from "@/data/decks";
+import type {Deck as DeckType} from "@/types/deck";
+import type {QuizMode} from "@/types/quizMode";
 
-
-type QuizMode = 'shuffled' | 'sequential'
 
 export const useFlashcardStore = defineStore('flashcard', () => {
 
     load(import.meta.env.VITE_FATHOM_SITE_ID)
 
-    const deck = almulk;
-    const deckTitle = deck.title
+    const deck = ref<DeckType | null>();
+
+    const setCurrentDeck = (slug: string) => {
+        const index = deckList.findIndex((deck) => deck.slug === slug)
+        deck.value = deckList[index]
+        console.log(`new deck: ${deck.value?.title}`)
+    }
+
+    const deckTitle = computed(() => deck.value?.title)
     const cards = ref<Card[]>([])
 
     const cardsPerDeck = 5
@@ -21,8 +28,10 @@ export const useFlashcardStore = defineStore('flashcard', () => {
     const correctAnswersCount = ref<number>(0)
     const wrongAnswersCount = ref<number>(0)
 
-    const selectedMode = ref<QuizMode>()
+    const selectedMode = ref<QuizMode | null>()
     const setSelectedMode = (mode: QuizMode) => selectedMode.value = mode
+    watch(() => selectedMode, () => cards.value = [])
+    const currentDeckQuizModes = computed(() => deck.value?.modes)
 
     const isShowingQuestion = ref(true)
 
@@ -58,12 +67,14 @@ export const useFlashcardStore = defineStore('flashcard', () => {
         let selectedCards: Card[] = [];
 
         if (selectedMode.value === 'sequential') {
-            selectedCards = deck.cards
+            selectedCards = deck.value?.cards ?? []
         } else if (selectedMode.value === 'shuffled') {
-            const shuffledCards = deck.cards.sort(() => Math.random() - 0.5)
+            const shuffledCards = deck.value?.cards.sort(() => Math.random() - 0.5)
 
             for (let i = 0; i < cardsPerDeck; i++) {
-                selectedCards.push(shuffledCards[i])
+                if (shuffledCards && shuffledCards[i]) {
+                    selectedCards.push(shuffledCards[i])
+                }
             }
         }
 
@@ -90,6 +101,15 @@ export const useFlashcardStore = defineStore('flashcard', () => {
         nextCard()
     }
 
+    const $reset = () => {
+        deck.value = null
+        selectedMode.value = null
+        cards.value = []
+        isFirstSet.value = true
+        resetIndex()
+        resetResults()
+    }
+
     const cardsCount = computed(() => cards.value?.length)
 
     const displayText = computed(() => {
@@ -112,6 +132,7 @@ export const useFlashcardStore = defineStore('flashcard', () => {
         index,
         deckTitle,
         displayText,
+        currentDeckQuizModes,
         displayDescription,
         isShowingQuestion,
         correctAnswersCount,
@@ -121,6 +142,8 @@ export const useFlashcardStore = defineStore('flashcard', () => {
         cardsCount,
         isFirstSet,
         isReadyForNewSet,
+        $reset,
+        setCurrentDeck,
         initNewSet,
         flipCard,
         markAsCorrect,

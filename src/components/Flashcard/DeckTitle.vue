@@ -6,7 +6,9 @@
 
 <script setup lang="ts">
 import {useFlashcardStore} from "@/stores/flashcard";
+import {storeToRefs} from "pinia";
 
-const {deckTitle} = useFlashcardStore()
+const store = useFlashcardStore()
+const {deckTitle} = storeToRefs(store)
 
 </script>

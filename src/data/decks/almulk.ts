@@ -2,6 +2,8 @@ import type {Deck} from "@/types/deck";
 
 const almulk: Deck = {
     title: 'Al-Mulk',
+    slug: 'al-mulk',
+    modes: ['sequential', 'shuffled'],
     cards: [
         {
             front: "تَبَـٰرَكَ ٱلَّذِى بِيَدِهِ",

@@ -2,24 +2,7 @@
     <div class="flex flex-col items-center w-full ">
         <DeckTitle/>
         <template v-if="isFirstSet">
-            <div class="items-center px-6 w-full mt-3">
-                <div class="space-y-6">
-                    <div class="md:space-x-3">
-                        <button
-                            class="mt-4 animate-pulse border border-blue-300 border-opacity-50 text-blue-300 text-lg font-bold  tracking-wider  py-3 w-full  sm:w-48 rounded-lg hover:bg-gray-700"
-                            @click="initNewSet('sequential')"
-                        >
-                            BERTURUTAN
-                        </button>
-                        <button
-                            class="mt-4 animate-pulse border border-blue-300 border-opacity-50 text-blue-300 text-lg font-bold  tracking-wider  py-3 w-full  sm:w-48 rounded-lg hover:bg-gray-700"
-                            @click="initNewSet('shuffled')"
-                        >
-                            RAWAK
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <DeckModes/>
         </template>
         <FlashCard v-else-if="isOngoing"/>
         <DeckResult v-else/>
@@ -42,6 +25,7 @@ import DeckResult from "@/components/Flashcard/DeckResult.vue"
 import DeckTitle from "@/components/Flashcard/DeckTitle.vue";
 import {useFlashcardStore} from "@/stores/flashcard";
 import {storeToRefs} from "pinia";
+import DeckModes from "@/components/Flashcard/DeckModes.vue";
 
 const store = useFlashcardStore()
 const {isOngoing, isFirstSet, isReadyForNewSet, selectedMode} = storeToRefs(store)
