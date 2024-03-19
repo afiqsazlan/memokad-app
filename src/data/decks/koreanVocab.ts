@@ -102,8 +102,76 @@ const koreanVocab: Deck = {
             back: 'bunga'
         },
         {
-            front: '',
-            back: 'bunga'
+            front: '거울',
+            back: 'cermin'
+        },
+        {
+            front: '화장실',
+            back: 'bilik mandi'
+        },
+        {
+            front: '세수하다',
+            back: 'cuci muka'
+        },
+        {
+            front: '샤워하다',
+            back: 'mandi'
+        },
+        {
+            front: '샤워했어',
+            back: 'Saya dah mandi'
+        },
+        {
+            front: '이를닦다',
+            back: 'menggosok gigi'
+        },
+        {
+            front: '이를 닦자',
+            back: 'Jom gosok gigi bersama'
+        },
+        {
+            front: '물로 헹구다',
+            back: 'membilas dengan air'
+        },
+        {
+            front: '물로 헹구다',
+            back: 'bilas dengan air'
+        },
+        {
+            front: '물로 헹궈야 해',
+            back: 'awak perlu bilas dengan air'
+        },
+        {
+            front: '수건으로 손을 닦다',
+            back: 'mengelap tangan dengan tuala'
+        },
+        {
+            front: '수건으로 손을 닦을까?',
+            back: 'Patut saya lap tangan dengan tuala?'
+        },
+        {
+            front: '손',
+            back: 'tangan'
+        },
+        {
+            front: '머리를 감다',
+            back: 'mencuci rambut'
+        },
+        {
+            front: '머리를 감지마',
+            back: 'Jangan cuci rambut awak'
+        },
+        {
+            front: '머리를 말리다',
+            back: 'mengeringkan rambut'
+        },
+        {
+            front: '머리를 말릴 거야',
+            back: 'Saya akan keringkan rambut saya'
+        },
+        {
+            front: '머리를 빗다',
+            back: 'mengeringkan rambut'
         }
 
     ]
